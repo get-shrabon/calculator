@@ -1,0 +1,129 @@
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	border: 0;
+	outline: 0;
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+		Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+body {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: rgba(0, 0, 0, 0.845);
+}
+.container {
+	width: 400px;
+	height: auto;
+	padding: 30px;
+	border-radius: 20px;
+	box-shadow: 2px 2px 20px 2px #ffffff29;
+	background-color: rgb(27, 27, 27);
+	position: relative;
+}
+button {
+	font-weight: 700;
+	font-size: 110%;
+	cursor: pointer;
+}
+.head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+}
+.head input {
+	width: 100%;
+	padding: 10px;
+	background-color: transparent;
+	border: 1px solid rgba(255, 0, 255, 0.485);
+	transition: 0.3s all;
+	border-radius: 8px;
+	color: white;
+	user-select: none;
+}
+.head input:focus {
+	border-color: magenta;
+	box-shadow: 1px 1px 10px magenta;
+}
+.head button {
+	padding: 10px;
+	border-radius: 8px;
+	cursor: pointer;
+	transition: 0.3s all;
+	background-color: magenta;
+	border: 1px solid magenta;
+	color: white;
+	font-size: 100%;
+}
+.head button:hover {
+	background-color: transparent;
+}
+.btns {
+	display: grid;
+	grid-template-columns: repeat(4, 5fr);
+	gap: 10px;
+	margin-top: 20px;
+}
+.btns button {
+	background-color: rgba(0, 0, 0, 0.945);
+	color: white;
+	padding: 10px;
+	border-radius: 8px;
+	transition: 0.3s all;
+}
+.btns button:hover {
+	background-color: rgba(255, 0, 255, 0.112);
+}
+.btns .highlight {
+	background-color: rgba(255, 0, 255, 0.112);
+}
+.btns .highlight:nth-last-child(1) {
+	background-color: magenta;
+}
+.btns .highlight:hover {
+	background-color: magenta;
+}
+
+
+/*======================================== Border Animation ================================ */
+
+
+@property --angle {
+	syntax: "<angle>";
+	initial-value: 0deg;
+	inherits: false;
+}
+
+.container::after,
+.container::before {
+	content: "";
+	width: 100%;
+	height: 100%;
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	background-image: conic-gradient(from var(--angle), transparent 70%, magenta);
+	translate: -50% -50%;
+	z-index: -1;
+	padding: 3px;
+	border-radius: 20px;
+	animation: 3s spin linear infinite;
+}
+.container::before {
+	filter: blur(50px);
+	opacity: 0.5;
+}
+
+@keyframes spin {
+	from {
+		--angle:0deg;
+	}
+	to {
+		--angle:360deg;
+
+	}
+}
