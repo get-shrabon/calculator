@@ -8,32 +8,127 @@
 	</head>
 	<body>
 		<div class="container">
-				<div class="head">
-					<input type="number" name="result" placeholder="Result..." />
-					<button>Clear</button>
-				</div>
-                <div class="btns">
-                    <button class="highlight">AC</button>
-                    <button class="highlight">X</button>
-                    <button class="highlight">+/</button>
-                    <button class="highlight">/</button>
-                    <button value="7">7</button>
-                    <button value="8">8</button>
-                    <button value="9">9</button>
-                    <button class="highlight">*</button>
-                    <button value="4">4</button>
-                    <button value="5">5</button>
-                    <button value="6">6</button>
-                    <button class="highlight">-</button>
-                    <button value="1">1</button>
-                    <button value="2">2</button>
-                    <button value="3">3</button>
-                    <button class="highlight">+</button>
-                    <button>%</button>
-                    <button value="0">0</button>
-                    <button>.</button>
-                    <button class="highlight">=</button>
-                </div>
+			<div class="head">
+				<input id="result" type="number" name="result" placeholder="Result..." />
+				<button id="clear-all">Clear</button>
+			</div>
+			<div class="btns">
+				<button data-value="ac" class="highlight">AC</button>
+				<button data-value="x" class="highlight">X</button>
+				<button data-value="+/-" class="highlight">+/-</button>
+				<button data-value="/" class="highlight">/</button>
+				<button data-value="7">7</button>
+				<button data-value="8">8</button>
+				<button data-value="9">9</button>
+				<button data-value="*" class="highlight">*</button>
+				<button data-value="4">4</button>
+				<button data-value="5">5</button>
+				<button data-value="6">6</button>
+				<button data-value="-" class="highlight">-</button>
+				<button data-value="1">1</button>
+				<button data-value="2">2</button>
+				<button data-value="3">3</button>
+				<button data-value="+" class="highlight">+</button>
+				<button>%</button>
+				<button data-value="0">0</button>
+				<button data-value=".">.</button>
+				<button id="equal" class="highlight">=</button>
+			</div>
 		</div>
+		<script>
+			const resultElement = document.getElementById("result");
+let currnetInput = "";
+let previousInput = "";
+let operator = "";
+
+// Update Function
+function updateDisplay(value) {
+    resultElement.value = value;
+}
+
+// Clear Function
+function clearAll() {
+    currnetInput = "";
+    previousInput = "";
+    operator = "";
+    updateDisplay(0);
+}
+
+// Append Function
+function appendNumber(number) {
+    currnetInput += number;
+    updateDisplay(currnetInput);
+}
+
+// Choose Operator Function
+function chooseOperator(op) {
+    if (currnetInput === "") return;
+    if (previousInput !== "") {
+        calculate();
+    }
+    operator = op;
+    previousInput = currnetInput;
+    currnetInput = "";
+}
+
+// Calculate Function
+function calculate() {
+    let result;
+    const prev = parseFloat(previousInput);
+    const current = parseFloat(currnetInput);
+    if (isNaN(prev) || isNaN(current)) return;
+    switch (operator) {
+        case "+":
+            result = prev + current;
+            break;
+        case "-":
+            result = prev - current;
+            break;
+        case "*":
+            result = prev * current;
+            break;
+        case "/":
+            result = prev / current;
+            break;
+        default:
+            return;
+    }
+    currnetInput = result.toString();
+    operator = "";
+    previousInput = "";
+    updateDisplay(currnetInput);
+}
+
+// Handle Click Event
+function handleButtonClick(event) {
+    const value = event.target.getAttribute("data-value");
+    if (value === null) return;
+    if ((value >= "0" && value <= "9") || value === ".") {
+        appendNumber(value);
+    } else if (value === "x") {
+        currnetInput = currnetInput.slice(0, -1);
+        updateDisplay(currnetInput);
+    } else if (value === "+/-") {
+        currnetInput = (parseFloat(currnetInput) * -1).toString();
+        updateDisplay(currnetInput);
+    } else if (value === "ac") {
+        clearAll();
+    } else {
+        chooseOperator(value);
+    }
+}
+
+// Attach event listeners to all buttons
+document.querySelectorAll(".btns button").forEach((button) => {
+    button.addEventListener("click", handleButtonClick);
+});
+
+// EQUAL button
+document.getElementById("equal").addEventListener("click", calculate);
+
+// CLEAR button
+document.getElementById("clear-all").addEventListener("click", clearAll);
+
+		</script>
 	</body>
 </html>
